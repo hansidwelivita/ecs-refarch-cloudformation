@@ -19,7 +19,7 @@ Parameters:
   MaxCount:
     Description: Maximum number of instances of this task we can run across our cluster
     Type: Number
-    Default: 3
+    Default: 10
 
   ProductServiceUrl:
     Description: The URL of the Product Service (used to fetch product information)
@@ -192,8 +192,8 @@ Resources:
   CPUScaleOutAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: CPU utilization greater than 9%
-      AlarmDescription: Alarm if cpu utilization greater than 5% of reserved cpu
+      AlarmName: CPU utilization greater than 1%
+      AlarmDescription: Alarm if cpu utilization greater than 1% of reserved cpu
       Namespace: AWS/ECS
       MetricName: CPUUtilization
       Dimensions:
@@ -203,8 +203,8 @@ Resources:
           Value: !GetAtt Service.Name
       Statistic: Maximum
       Period: "60"
-      EvaluationPeriods: "3"
-      Threshold: "5"
+      EvaluationPeriods: "1"
+      Threshold: "1"
       ComparisonOperator: GreaterThanThreshold
       AlarmActions:
         - !Ref ServiceScaleOutPolicy
@@ -212,8 +212,8 @@ Resources:
   CPUScaleInAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: CPU utilization less than 7%
-      AlarmDescription: Alarm if cpu utilization greater than 7% of reserved cpu
+      AlarmName: CPU utilization less than 0.7%
+      AlarmDescription: Alarm if cpu utilization greater than 0.7% of reserved cpu
       Namespace: AWS/ECS
       MetricName: CPUUtilization
       Dimensions:
@@ -223,8 +223,8 @@ Resources:
           Value: !GetAtt Service.Name
       Statistic: Maximum
       Period: "60"
-      EvaluationPeriods: "10"
-      Threshold: "7"
+      EvaluationPeriods: "2"
+      Threshold: "0.7"
       ComparisonOperator: LessThanThreshold
       AlarmActions:
         - !Ref ServiceScaleInPolicy
